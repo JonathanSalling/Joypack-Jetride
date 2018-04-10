@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System;
 namespace Joypack_Jetride
 {
     /// <summary>
@@ -11,7 +11,11 @@ namespace Joypack_Jetride
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+        Texture2D playerTexture; 
+        Rectangle playerRectangle;
+        Vector2 moveDir;
+        Vector2 position;
+        float speed;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,8 +31,10 @@ namespace Joypack_Jetride
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
+            position = Vector2.Zero;
+            speed = 5;
+            playerRectangle = playerTexture.Bounds;
         }
 
         /// <summary>
@@ -39,7 +45,7 @@ namespace Joypack_Jetride
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            playerTexture = Content.Load<Texture2D>("PlayerTexture");
             // TODO: use this.Content to load your game content here
         }
 
@@ -61,9 +67,22 @@ namespace Joypack_Jetride
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             // TODO: Add your update logic here
-
+            KeyboardState keyboardState = Keyboard.GetState();
+            position = moveDir;
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                moveDir.Y = -0.000000001f;
+            }
+            else
+            {
+                moveDir.Y = 0.000000000000000001f;
+            }
+            if (moveDir != Vector2.Zero)
+            {
+                moveDir.Normalize();
+                playerRectangle.Location += (position * speed).ToPoint();
+            }
             base.Update(gameTime);
         }
 
@@ -76,7 +95,10 @@ namespace Joypack_Jetride
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(playerTexture, playerRectangle, Color.White);
+            spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }
