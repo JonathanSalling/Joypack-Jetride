@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System;
 namespace Joypack_Jetride
 {
     /// <summary>
@@ -11,11 +11,22 @@ namespace Joypack_Jetride
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+        Enemy enemy;
+        Player player;
+        Texture2D playerTexture;
+        Texture2D enemyTexture;
+        Rectangle playerRectangle;
+        Vector2 moveDir;
+        Vector2 position;
+        Vector2 scale;
+        Vector2 offset;
+        float speed;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+
         }
 
         /// <summary>
@@ -27,8 +38,15 @@ namespace Joypack_Jetride
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
+            player = new Player(playerTexture, new Vector2(20, 1), 300, new Vector2(1, 1), Color.White);
+            enemy = new Enemy(enemyTexture, new Vector2(100, 1), 300, new Vector2(1, 1), Color.White);
+            //position = new Vector2(20, 1);
+            //speed = 5;
+            //scale = new Vector2(0.2f, 0.2f);
+            //offset = (playerTexture.Bounds.Size.ToVector2() / 2.0f) * scale;
+            //playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
+            //playerRectangle = playerTexture.Bounds;
         }
 
         /// <summary>
@@ -39,6 +57,7 @@ namespace Joypack_Jetride
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            playerTexture = Content.Load<Texture2D>("PlayerTexture");
 
             // TODO: use this.Content to load your game content here
         }
@@ -61,9 +80,22 @@ namespace Joypack_Jetride
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             // TODO: Add your update logic here
-
+            enemy.Update(gameTime, player);
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                moveDir.Y = -1f;
+            }
+            else
+            {
+                moveDir.Y = 1f;
+            }
+            if (moveDir != Vector2.Zero)
+            {
+                moveDir.Normalize();
+                position += (moveDir * speed);
+            }
             base.Update(gameTime);
         }
 
@@ -76,7 +108,11 @@ namespace Joypack_Jetride
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            //enemy.Draw(spriteBatch);
+            spriteBatch.Draw(playerTexture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }
