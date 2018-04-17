@@ -13,8 +13,6 @@ namespace Joypack_Jetride
         SpriteBatch spriteBatch;
         Enemy enemy;
         Player player;
-        Texture2D playerTexture;
-        Texture2D enemyTexture;
         Rectangle playerRectangle;
         Vector2 moveDir;
         Vector2 position;
@@ -39,14 +37,14 @@ namespace Joypack_Jetride
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-            player = new Player(playerTexture, new Vector2(20, 1), 300, new Vector2(1, 1), Color.White);
-            enemy = new Enemy(enemyTexture, new Vector2(100, 1), 300, new Vector2(1, 1), Color.White);
-            //position = new Vector2(20, 1);
-            //speed = 5;
-            //scale = new Vector2(0.2f, 0.2f);
-            //offset = (playerTexture.Bounds.Size.ToVector2() / 2.0f) * scale;
-            //playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
-            //playerRectangle = playerTexture.Bounds;
+            player = new Player(TextureLibrary.GetTexture("PlayerTexture"), new Vector2(20, 1), 300, new Vector2(1, 1), Color.White);
+            enemy = new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(100, 1), 300, new Vector2(1, 1), Color.White);
+            position = new Vector2(20, 1);
+            speed = 5;
+            scale = new Vector2(0.2f, 0.2f);
+            offset = (TextureLibrary.GetTexture("PlayerTexture").Bounds.Size.ToVector2() / 2.0f) * scale;
+            playerRectangle = new Rectangle((position - offset).ToPoint(), (TextureLibrary.GetTexture("PlayerTexture").Bounds.Size.ToVector2() * scale).ToPoint());
+            playerRectangle = TextureLibrary.GetTexture("PlayerTexture").Bounds;
         }
 
         /// <summary>
@@ -57,7 +55,9 @@ namespace Joypack_Jetride
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            playerTexture = Content.Load<Texture2D>("PlayerTexture");
+
+            TextureLibrary.LoadTexture(Content, "PlayerTexture");
+            TextureLibrary.LoadTexture(Content, "Enemy");
 
             // TODO: use this.Content to load your game content here
         }
@@ -110,7 +110,7 @@ namespace Joypack_Jetride
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             //enemy.Draw(spriteBatch);
-            spriteBatch.Draw(playerTexture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(TextureLibrary.GetTexture("PlayerTexture"), position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
             
             base.Draw(gameTime);
