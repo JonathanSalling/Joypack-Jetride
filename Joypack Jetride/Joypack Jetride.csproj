@@ -47,6 +47,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <Compile Include="Player.cs" />
 >>>>>>> aabc7eb0769954b4b1232179f3f854e99302f56e
@@ -59,6 +60,9 @@
 =======
     <Compile Include="Player.cs" />
 >>>>>>> aabc7eb0769954b4b1232179f3f854e99302f56e
+=======
+    <Compile Include="Player.cs" />
+>>>>>>> 08732e054e8cc173a69ad205ba7eed5596a8ddaf
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextureLibrary.cs" />

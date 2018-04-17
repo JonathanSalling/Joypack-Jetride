@@ -55,21 +55,9 @@ namespace Joypack_Jetride
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-<<<<<<< HEAD
-            TextureLibrary.LoadTexture(Content, "PlayerTexture");
-=======
+
             playerTexture = Content.Load<Texture2D>("PlayerTexture");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> aabc7eb0769954b4b1232179f3f854e99302f56e
-=======
->>>>>>> aabc7eb0769954b4b1232179f3f854e99302f56e
-=======
->>>>>>> aabc7eb0769954b4b1232179f3f854e99302f56e
-=======
->>>>>>> aabc7eb0769954b4b1232179f3f854e99302f56e
             // TODO: use this.Content to load your game content here
         }
 
