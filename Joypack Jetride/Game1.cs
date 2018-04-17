@@ -25,6 +25,8 @@ namespace Joypack_Jetride
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+
         }
 
         /// <summary>
