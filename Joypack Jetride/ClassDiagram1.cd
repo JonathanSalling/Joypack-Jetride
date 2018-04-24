@@ -7,11 +7,11 @@
       <FileName>Game1.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Joypack_Jetride.Enemy">
-    <Position X="4.75" Y="3.25" Width="1.5" />
+  <Class Name="Joypack_Jetride.TextureLibrary">
+    <Position X="9" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQgAAAAAAAAAAAA=</HashCode>
-      <FileName>Enemy.cs</FileName>
+      <HashCode>AAAEAAACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextureLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
