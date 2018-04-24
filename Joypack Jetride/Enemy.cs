@@ -11,7 +11,7 @@ namespace Joypack_Jetride
 {
     class Enemy
     {
-        Rectangle rectangle;
+        Rectangle enemyRectangle;
         Texture2D texture;
         Vector2 moveDir;
         Vector2 position;
@@ -23,11 +23,14 @@ namespace Joypack_Jetride
         {
             texture = enemyTexture;
             position = enemyStartPos;
+
             speed = enemySpeed;
             moveDir = Vector2.Zero;
             scale = enemyScale;
-            rectangle = texture.Bounds;
+            enemyRectangle = texture.Bounds;
             color = enemyColor;
+            scale = new Vector2(0.2f, 0.2f);
+            position = new Vector2(400, 1);
         }
         public void Update(GameTime gameTime, Player player)
         {
@@ -43,7 +46,7 @@ namespace Joypack_Jetride
         }
         public Rectangle GetRectangle()
         {
-            return rectangle;
+            return enemyRectangle;
         }
         public Vector2 GetPosition()
         {
