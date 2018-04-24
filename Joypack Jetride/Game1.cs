@@ -11,10 +11,18 @@ namespace Joypack_Jetride
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        //Camera camera;
+        Bullet bullet;
         Enemy enemy;
         Player player;
+        Ground ground;
+        Texture2D bulletTexture;
+        Rectangle bulletRectangle;
         Texture2D playerTexture;
+        Rectangle groundRectangle;
         Texture2D enemyTexture;
+        Rectangle enemyRectangle;
+        Texture2D groundTexture;
         Rectangle playerRectangle;
         Vector2 moveDir;
         Vector2 position;
@@ -25,8 +33,6 @@ namespace Joypack_Jetride
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-
         }
 
         /// <summary>
@@ -39,14 +45,18 @@ namespace Joypack_Jetride
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-            player = new Player(playerTexture, new Vector2(20, 1), 300, new Vector2(1, 1), Color.White);
-            enemy = new Enemy(enemyTexture, new Vector2(100, 1), 300, new Vector2(1, 1), Color.White);
-            //position = new Vector2(20, 1);
-            //speed = 5;
-            //scale = new Vector2(0.2f, 0.2f);
-            //offset = (playerTexture.Bounds.Size.ToVector2() / 2.0f) * scale;
-            //playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
+            player = new Player(playerTexture, new Vector2(20, 1), 5, new Vector2(1, 1), Color.White);
+            enemy = new Enemy(enemyTexture, new Vector2(100, 1), 60, new Vector2(1, 1), Color.White);
+            ground = new Ground(groundTexture, new Vector2(20, 0), new Vector2(20, 1), Color.White);
+            position = new Vector2(20, 1);
+            speed = 5;
+            scale = new Vector2(0.2f, 0.2f);
+            offset = (playerTexture.Bounds.Size.ToVector2() / 2.0f) * scale;
+            playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
             //playerRectangle = playerTexture.Bounds;
+            groundRectangle = groundTexture.Bounds;
+            groundRectangle.Location = ground.AccessPosition.ToPoint();
+            enemyRectangle.Location = ground.AccessPosition.ToPoint();
         }
 
         /// <summary>
@@ -57,7 +67,10 @@ namespace Joypack_Jetride
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            bulletTexture = Content.Load<Texture2D>("Bullet");
             playerTexture = Content.Load<Texture2D>("PlayerTexture");
+            enemyTexture = Content.Load<Texture2D>("Enemy");
+            groundTexture = Content.Load<Texture2D>("Ground");
 
             // TODO: use this.Content to load your game content here
         }
@@ -81,22 +94,42 @@ namespace Joypack_Jetride
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float pixelsToMove = speed * deltaTime;
             enemy.Update(gameTime, player);
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                moveDir.Y = -1f;
+                speed = -5f;
             }
             else
             {
-                moveDir.Y = 1f;
+                moveDir.Y = 5f;
             }
             if (moveDir != Vector2.Zero)
             {
                 moveDir.Normalize();
                 position += (moveDir * speed);
+                playerRectangle.Location = position.ToPoint();
             }
-            base.Update(gameTime);
+            if (playerRectangle.Intersects(groundRectangle))
+            {
+                speed = 0;   
+            }
+            if (enemyRectangle.Intersects(groundRectangle))
+            {
+                
+            }
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                speed = 5;
+            }
+            if (enemyTexture.Bounds.Location.Y != playerTexture.Bounds.Location.Y)
+            {
+                
+            }
+
+                base.Update(gameTime);
         }
 
         /// <summary>
@@ -109,7 +142,11 @@ namespace Joypack_Jetride
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            //enemy.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+            ground.Draw(spriteBatch);
+            bullet.Draw(spriteBatch);
+            //player.Draw(spriteBatch);
+            //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.Draw(playerTexture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
             

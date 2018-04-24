@@ -62,6 +62,13 @@ namespace Joypack_Jetride
             return damageToDeal;
         }
         public bool GetIsAlive()
+        {
+            return alive;
+        }
+        public Owner GetOwner()
+        {
+            return owner;
+        }
     }
     
 }
