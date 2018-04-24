@@ -19,12 +19,11 @@ namespace Joypack_Jetride
         Vector2 scale;
         Vector2 offset;
         float speed;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-
         }
 
         /// <summary>
