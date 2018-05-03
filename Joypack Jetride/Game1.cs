@@ -11,7 +11,8 @@ namespace Joypack_Jetride
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //Camera camera;
+        Scrolling scrolling1;
+        Scrolling scrolling2;
         Bullet bullet;
         Enemy enemy;
         Player player;
@@ -29,6 +30,8 @@ namespace Joypack_Jetride
         Vector2 scale;
         Vector2 offset;
         float speed;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -50,8 +53,8 @@ namespace Joypack_Jetride
             ground = new Ground(groundTexture, new Vector2(20, 0), new Vector2(20, 1), Color.White);
             position = new Vector2(20, 1);
             speed = 5;
-            scale = new Vector2(0.2f, 0.2f);
-            offset = (playerTexture.Bounds.Size.ToVector2() / 2.0f) * scale;
+            scale = new Vector2(0.15f, 0.15f);
+            offset = (playerTexture.Bounds.Size.ToVector2() / 2f) * scale;
             playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
             //playerRectangle = playerTexture.Bounds;
             groundRectangle = groundTexture.Bounds;
@@ -71,6 +74,9 @@ namespace Joypack_Jetride
             playerTexture = Content.Load<Texture2D>("PlayerTexture");
             enemyTexture = Content.Load<Texture2D>("Enemy");
             groundTexture = Content.Load<Texture2D>("Ground");
+
+            scrolling1 = new Scrolling(Content.Load<Texture2D>("Background"), new Rectangle(0, 0, 800, 485));
+            scrolling2 = new Scrolling(Content.Load<Texture2D>("Background"), new Rectangle(800, 0, 800, 485));
 
             // TODO: use this.Content to load your game content here
         }
@@ -94,6 +100,17 @@ namespace Joypack_Jetride
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
+
+            // Scroling Background
+            if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
+            {
+                scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
+            }
+            if (scrolling2.rectangle.X + scrolling2.texture.Width <= 0)
+            {
+                scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling2.texture.Width;
+            }
+
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float pixelsToMove = speed * deltaTime;
             enemy.Update(gameTime, player);
@@ -128,8 +145,9 @@ namespace Joypack_Jetride
             {
                 
             }
-
-                base.Update(gameTime);
+            scrolling1.Update();
+            scrolling2.Update();
+            base.Update(gameTime);
         }
 
         /// <summary>
@@ -142,11 +160,14 @@ namespace Joypack_Jetride
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            enemy.Draw(spriteBatch);
-            ground.Draw(spriteBatch);
-            bullet.Draw(spriteBatch);
-            //player.Draw(spriteBatch);
+
+            scrolling1.Draw(spriteBatch);
+            scrolling2.Draw(spriteBatch);
+
+            //ground.Draw(spriteBatch);
+            //bullet.Draw(spriteBatch);
             //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            enemy.Draw(spriteBatch);
             spriteBatch.Draw(playerTexture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
             

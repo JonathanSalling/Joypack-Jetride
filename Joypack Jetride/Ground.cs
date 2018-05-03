@@ -29,7 +29,7 @@ namespace Joypack_Jetride
             groundRectangle = new Rectangle((groundStartPos - offset).ToPoint(), (groundTexture.Bounds.Size.ToVector2() * groundScale).ToPoint());
             color = groundColor;
             scale = new Vector2(1f, 1f);
-            position = new Vector2(-5, 370);
+            position = new Vector2(-5, 450);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
