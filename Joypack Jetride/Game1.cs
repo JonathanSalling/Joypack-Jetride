@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 namespace Joypack_Jetride
 {
     /// <summary>
@@ -18,7 +19,7 @@ namespace Joypack_Jetride
         Player player;
         Ground ground;
         Texture2D bulletTexture;
-        Rectangle bulletRectangle;
+        //Rectangle bulletRectangle;
         Texture2D playerTexture;
         Rectangle groundRectangle;
         Texture2D enemyTexture;
@@ -29,9 +30,13 @@ namespace Joypack_Jetride
         Vector2 position;
         Vector2 scale;
         Vector2 offset;
+        Random random;
+        int numEnemys;
+        List<Enemy> enemys;
+        Dictionary<string, Texture2D> textures;
         float speed;
-
-
+        float enemySpawnTimer;
+        float lastSpawnTime;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -46,20 +51,33 @@ namespace Joypack_Jetride
         /// </summary>
         protected override void Initialize()
         {
+            random = new Random();
+            enemySpawnTimer = 0.5f;
+            lastSpawnTime = 0;
+            enemys = new List<Enemy>();
+            textures = new Dictionary<string, Texture2D>();
+            numEnemys = 10;
             // TODO: Add your initialization logic here
             base.Initialize();
-            player = new Player(playerTexture, new Vector2(20, 1), 5, new Vector2(1, 1), Color.White);
-            enemy = new Enemy(enemyTexture, new Vector2(100, 1), 60, new Vector2(1, 1), Color.White);
+            player = new Player(TextureLibrary.GetTexture("PlayerTexture"), new Vector2(20, 1), 5, new Vector2(1, 1),  Color.White, 1000, 1);
+            enemy = new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(100, 1), 5, new Vector2(1, 1), Color.White, 1000, 10000, 1);
+            for (int i = 0; i < numEnemys; i++)
+            {
+                float randomY = random.Next(Window.ClientBounds.Height);
+                enemys.Add(new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(randomY), 30, Vector2.One, Color.White, 1000, 500000000 ,1));
+            }
+            
             ground = new Ground(groundTexture, new Vector2(20, 0), new Vector2(20, 1), Color.White);
             position = new Vector2(20, 1);
             speed = 5;
             scale = new Vector2(0.15f, 0.15f);
             offset = (playerTexture.Bounds.Size.ToVector2() / 2f) * scale;
             playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
+            //enemyRectangle = new Rectangle((position - offset).ToPoint(), (enemyTexture.Bounds.Size.ToVector2() * scale).ToPoint());
             //playerRectangle = playerTexture.Bounds;
             groundRectangle = groundTexture.Bounds;
             groundRectangle.Location = ground.AccessPosition.ToPoint();
-            enemyRectangle.Location = ground.AccessPosition.ToPoint();
+            //enemyRectangle.Location = ground.AccessPosition.ToPoint();
         }
 
         /// <summary>
@@ -74,10 +92,15 @@ namespace Joypack_Jetride
             playerTexture = Content.Load<Texture2D>("PlayerTexture");
             enemyTexture = Content.Load<Texture2D>("Enemy");
             groundTexture = Content.Load<Texture2D>("Ground");
+            //enemyTexture = Content.Load<Texture2D>("Enemy");
+            //textures.Add("Enemy", Content.Load<Texture2D>("Enemy"));
 
             scrolling1 = new Scrolling(Content.Load<Texture2D>("Background"), new Rectangle(0, 0, 800, 485));
             scrolling2 = new Scrolling(Content.Load<Texture2D>("Background"), new Rectangle(800, 0, 800, 485));
 
+            TextureLibrary.LoadTexture(Content, "Enemy");
+            TextureLibrary.LoadTexture(Content, "PlayerTexture");
+            TextureLibrary.LoadTexture(Content, "Bullet");
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,6 +120,7 @@ namespace Joypack_Jetride
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            IsMouseVisible = true;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
@@ -112,16 +136,29 @@ namespace Joypack_Jetride
             }
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            player.Update(deltaTime, Keyboard.GetState(), Mouse.GetState(), Window.ClientBounds.Size);
             float pixelsToMove = speed * deltaTime;
-            enemy.Update(gameTime, player);
+            if (gameTime.TotalGameTime.TotalSeconds >= lastSpawnTime + enemySpawnTimer)
+            {
+                //float randomX = random.Next(Window.ClientBounds.Width);
+                float randomY = random.Next(Window.ClientBounds.Height);
+                lastSpawnTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            }
+            for (int i = 0; i < enemys.Count; i++)
+            {
+                enemys[i].Update(gameTime, player);
+            }
+
+            //BulletManager.Update(deltaTime, player, enemies);
+            //enemy.Update(gameTime, player);
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                speed = -5f;
+                moveDir.Y = -5;
             }
             else
             {
-                moveDir.Y = 5f;
+                speed = -5;
             }
             if (moveDir != Vector2.Zero)
             {
@@ -131,16 +168,19 @@ namespace Joypack_Jetride
             }
             if (playerRectangle.Intersects(groundRectangle))
             {
-                speed = 0;   
+                moveDir.Y = 0;
             }
             if (enemyRectangle.Intersects(groundRectangle))
             {
-                
+                moveDir.Y = 0;
             }
+            Console.WriteLine(enemyRectangle.Y);
             if (keyboardState.IsKeyDown(Keys.W))
             {
                 speed = 5;
             }
+            BulletManager.Update(deltaTime, player, enemys);
+            base.Update(gameTime);
             if (enemyTexture.Bounds.Location.Y != playerTexture.Bounds.Location.Y)
             {
                 
@@ -160,6 +200,16 @@ namespace Joypack_Jetride
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            //enemy.Draw(spriteBatch);
+            BulletManager.Draw(spriteBatch);
+            ground.Draw(spriteBatch);
+            
+            for (int i = 0; i < enemys.Count; i++)
+            {
+                enemys[i].Draw(spriteBatch);
+            }
+            //player.Draw(spriteBatch);
+            //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
             scrolling1.Draw(spriteBatch);
             scrolling2.Draw(spriteBatch);

@@ -48,7 +48,7 @@ namespace Joypack_Jetride
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, color, rotation, offset, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position, null, Color.White, rotation, offset, scale, SpriteEffects.None, 0);
         }
         public float Damage(Rectangle otherRectangle)
         {
