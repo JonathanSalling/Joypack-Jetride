@@ -18,7 +18,7 @@ namespace Joypack_Jetride
         Vector2 scale;
         Color color;
         float speed;
-
+        
         public Enemy(Texture2D enemyTexture, Vector2 enemyStartPos, float enemySpeed, Vector2 enemyScale, Color enemyColor)
         {
             texture = enemyTexture;
