@@ -117,13 +117,13 @@ namespace Joypack_Jetride
             // TODO: Add your update logic here
 
             // Scroling Background
-            if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
+            if (scrolling1.rectangle.X + scrolling1.rectangle.Width <= 0)
             {
-                scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
+                scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.rectangle.Width;
             }
-            if (scrolling2.rectangle.X + scrolling2.texture.Width <= 0)
+            if (scrolling2.rectangle.X + scrolling2.rectangle.Width <= 0)
             {
-                scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling2.texture.Width;
+                scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling1.rectangle.Width;
             }
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
