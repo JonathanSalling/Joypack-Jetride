@@ -33,8 +33,8 @@ namespace Joypack_Jetride
             scale = enemyScale;
             enemyRectangle = texture.Bounds;
             color = enemyColor;
-            scale = new Vector2(0.2f, 0.2f);
-            position = new Vector2(400, 1);
+            scale = enemyScale;
+            position = enemyStartPos;
             health = enemyHealth;
             alive = true;
             attackRange = enemyAttackRange;

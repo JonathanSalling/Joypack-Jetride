@@ -60,12 +60,7 @@ namespace Joypack_Jetride
             // TODO: Add your initialization logic here
             base.Initialize();
             player = new Player(TextureLibrary.GetTexture("PlayerTexture"), new Vector2(20, 1), 5, new Vector2(1, 1),  Color.White, 1000, 1);
-            enemy = new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(100, 1), 5, new Vector2(1, 1), Color.White, 1000, 10000, 1);
-            for (int i = 0; i < numEnemys; i++)
-            {
-                float randomY = random.Next(Window.ClientBounds.Height);
-                enemys.Add(new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(randomY), 30, Vector2.One, Color.White, 1000, 500000000 ,1));
-            }
+            enemy = new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(650, 175), 5, new Vector2(0.2f, 0.2f), Color.White, 1000, 10000, 1);
             
             ground = new Ground(groundTexture, new Vector2(20, 0), new Vector2(20, 1), Color.White);
             position = new Vector2(20, 1);
@@ -200,19 +195,14 @@ namespace Joypack_Jetride
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            scrolling1.Draw(spriteBatch);
+            scrolling2.Draw(spriteBatch);
             //enemy.Draw(spriteBatch);
             BulletManager.Draw(spriteBatch);
             ground.Draw(spriteBatch);
             
-            for (int i = 0; i < enemys.Count; i++)
-            {
-                enemys[i].Draw(spriteBatch);
-            }
             //player.Draw(spriteBatch);
             //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-
-            scrolling1.Draw(spriteBatch);
-            scrolling2.Draw(spriteBatch);
 
             //ground.Draw(spriteBatch);
             //bullet.Draw(spriteBatch);
