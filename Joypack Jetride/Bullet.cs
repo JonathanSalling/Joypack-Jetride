@@ -11,7 +11,7 @@ namespace Joypack_Jetride
 {
     class Bullet
     {
-        public enum Owner { Player, Enemy};
+        public enum Owner { Player, Enemy };
         Owner owner;
         Texture2D texture;
         Rectangle rectangle;
@@ -33,7 +33,7 @@ namespace Joypack_Jetride
             moveDir = bulletDir;
             moveDir.Normalize();
             scale = bulletScale;
-            offset = bulletTexture.Bounds.Size.ToVector2() * 0.5f;
+            offset = bulletTexture.Bounds.Size.ToVector2() * 0.05f;
             rectangle = new Rectangle((bulletStartPos - offset * scale).ToPoint(), (bulletTexture.Bounds.Size.ToVector2() * scale).ToPoint());
             rotation = (float)Math.Atan2(moveDir.Y, moveDir.X);
             color = bulletColor;
@@ -44,7 +44,8 @@ namespace Joypack_Jetride
         public void Update(float deltaTime)
         {
             position += moveDir * speed * deltaTime;
-            rectangle.Location = (position - offset * scale).ToPoint();
+            rectangle.Location = position.ToPoint();//((position - offset) * scale).ToPoint();
+            rectangle.Offset(-(offset * scale));
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -70,5 +71,5 @@ namespace Joypack_Jetride
             return owner;
         }
     }
-    
+
 }
