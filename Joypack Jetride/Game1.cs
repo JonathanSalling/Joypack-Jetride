@@ -31,8 +31,6 @@ namespace Joypack_Jetride
         Vector2 scale;
         Vector2 offset;
         Random random;
-        int numEnemys;
-        List<Enemy> enemys;
         Dictionary<string, Texture2D> textures;
         float speed;
         float enemySpawnTimer;
@@ -54,9 +52,7 @@ namespace Joypack_Jetride
             random = new Random();
             enemySpawnTimer = 0.5f;
             lastSpawnTime = 0;
-            enemys = new List<Enemy>();
             textures = new Dictionary<string, Texture2D>();
-            numEnemys = 10;
             // TODO: Add your initialization logic here
             base.Initialize();
             player = new Player(TextureLibrary.GetTexture("PlayerTexture"), new Vector2(20, 1), 5, new Vector2(1, 1),  Color.White, 1000, 1);
@@ -139,10 +135,6 @@ namespace Joypack_Jetride
                 float randomY = random.Next(Window.ClientBounds.Height);
                 lastSpawnTime = (float)gameTime.TotalGameTime.TotalSeconds;
             }
-            for (int i = 0; i < enemys.Count; i++)
-            {
-                enemys[i].Update(gameTime, player);
-            }
 
             //BulletManager.Update(deltaTime, player, enemies);
             //enemy.Update(gameTime, player);
@@ -174,7 +166,6 @@ namespace Joypack_Jetride
             {
                 speed = 5;
             }
-            BulletManager.Update(deltaTime, player, enemys);
             base.Update(gameTime);
             if (enemyTexture.Bounds.Location.Y != playerTexture.Bounds.Location.Y)
             {
