@@ -29,7 +29,7 @@ namespace Joypack_Jetride
 
         public void Update()
         {
-            rectangle.X -= 5;
+            rectangle.X -= 3;
         }
     }
 }
