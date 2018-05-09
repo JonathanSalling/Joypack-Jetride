@@ -54,7 +54,6 @@ namespace Joypack_Jetride
         public float Damage(Rectangle otherRectangle)
         {
             float damageToDeal = 0;
-
             if (rectangle.Intersects(otherRectangle))
             {
                 damageToDeal = damage;

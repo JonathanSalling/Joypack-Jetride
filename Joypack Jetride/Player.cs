@@ -40,10 +40,10 @@ namespace Joypack_Jetride
         {
             if (alive)
             {
+                moveDir.Y = -5;
                 if (keyboardState.IsKeyDown(Keys.W))
                 {
                     speed = 5;
-                    moveDir.Y = -5;
                 }
                 else
                 {
@@ -64,8 +64,7 @@ namespace Joypack_Jetride
 
                 if (keyboardState.IsKeyDown(Keys.Space) == true && attackTimer >= attackSpeed)
                 {
-                    Vector2 bulletDir = mouseState.Position.ToVector2() - position;
-                    BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, bulletDir, 100, new Vector2(0.05f, 0.05f), Bullet.Owner.Player, color);
+                    BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, new Vector2(1,0), 100, new Vector2(0.05f, 0.05f), Bullet.Owner.Player, color);
                     attackTimer = 0;
                 }
                 else

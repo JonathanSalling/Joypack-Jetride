@@ -32,7 +32,7 @@ namespace Joypack_Jetride
             position = enemyStartPos;
             speed = enemySpeed;
             moveDir = new Vector2(0, 1);
-            scale = enemyScale;
+            //scale = enemyScale;
             color = enemyColor;
             scale = new Vector2(0.2f, 0.2f);
             enemyRectangle = new Rectangle(position.ToPoint(), (texture.Bounds.Size.ToVector2() * scale).ToPoint());
@@ -66,16 +66,16 @@ namespace Joypack_Jetride
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float pixelsToMove = speed * deltaTime;
-            
-            if(position.Y >= 500 - (texture.Height * scale.Y))
+
+            if (position.Y >= 500 - (texture.Height * scale.Y))
             {
                 moveDir.Y = -1;
             }
-            else if(position.Y <= 0)
+            else if (position.Y <= 0)
             {
                 moveDir.Y = 1;
             }
-            
+
             moveDir.Normalize();
             position += moveDir * pixelsToMove;
             enemyRectangle.Location = position.ToPoint();

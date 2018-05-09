@@ -48,9 +48,7 @@ namespace Joypack_Jetride
         protected override void Initialize()
         {
             random = new Random();
-            enemys = new List<Enemy>();
             textures = new Dictionary<string, Texture2D>();
-            numEnemys = 1;
             // TODO: Add your initialization logic here
             base.Initialize();
             player = new Player(TextureLibrary.GetTexture("PlayerTexture"), new Vector2(20, 1), 5, new Vector2(1, 1),  Color.White, 1000, 1);
@@ -129,35 +127,9 @@ namespace Joypack_Jetride
 
             //BulletManager.Update(deltaTime, player, enemies);
             //enemy.Update(gameTime, player);
-            KeyboardState keyboardState = Keyboard.GetState();
+            
+            //BulletManager.Update(deltaTime, player, enemies);
 
-            //if (keyboardState.IsKeyDown(Keys.W))
-            //{
-            //    speed = 5;
-            //    moveDir.Y = -5;
-            //}
-            //else
-            //{
-            //    speed = -5;
-            //}
-            //if (playerRectangle.Intersects(groundRectangle))
-            //{
-            //    moveDir.Y = 0;
-            //}
-            //else
-            //{
-            //    moveDir.Y = -5;
-            //}
-            //if (enemyRectangle.Intersects(groundRectangle))
-            //{
-            //    moveDir.Y = 0;
-            //}
-            BulletManager.Update(deltaTime, player, enemys);
-
-            for (int i = 0; i < enemys.Count; i++)
-            {
-                enemys[i].Update(gameTime, player);
-            }
 
             scrolling1.Update();
             scrolling2.Update();
@@ -176,17 +148,16 @@ namespace Joypack_Jetride
             spriteBatch.Begin();
             scrolling1.Draw(spriteBatch);
             scrolling2.Draw(spriteBatch);
-            //enemy.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
             BulletManager.Draw(spriteBatch);
             ground.Draw(spriteBatch);
-            
-            //player.Draw(spriteBatch);
+            player.Draw(spriteBatch);
             //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
             //ground.Draw(spriteBatch);
             //bullet.Draw(spriteBatch);
             //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            //enemy.Draw(spriteBatch);
+            
             //spriteBatch.Draw(playerTexture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
             
