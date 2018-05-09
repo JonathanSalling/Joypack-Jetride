@@ -24,17 +24,19 @@ namespace Joypack_Jetride
         float attackTimer;
         float attackRange;
 
+        public Vector2 AccessPosition { get => position; set => position = value; }
+
         public Enemy(Texture2D enemyTexture, Vector2 enemyStartPos, float enemySpeed, Vector2 enemyScale, Color enemyColor, float enemyHealth, float enemyAttackRange, float enemyAttackSpeed)
         {
             texture = enemyTexture;
             position = enemyStartPos;
             speed = enemySpeed;
-            moveDir = Vector2.Zero;
+            moveDir = new Vector2(0, 1);
             scale = enemyScale;
-            enemyRectangle = texture.Bounds;
             color = enemyColor;
-            scale = enemyScale;
-            position = enemyStartPos;
+            scale = new Vector2(0.2f, 0.2f);
+            enemyRectangle = new Rectangle(position.ToPoint(), (texture.Bounds.Size.ToVector2() * scale).ToPoint());
+            position = new Vector2(400, 1);
             health = enemyHealth;
             alive = true;
             attackRange = enemyAttackRange;
@@ -64,9 +66,20 @@ namespace Joypack_Jetride
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float pixelsToMove = speed * deltaTime;
-            moveDir.Y = 1;
+
+            if (position.Y >= 500 - (texture.Height * scale.Y))
+            {
+                moveDir.Y = -1;
+            }
+            else if (position.Y <= 0)
+            {
+                moveDir.Y = 1;
+            }
+
             moveDir.Normalize();
             position += moveDir * pixelsToMove;
+            enemyRectangle.Location = position.ToPoint();
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
