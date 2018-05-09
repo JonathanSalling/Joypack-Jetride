@@ -31,6 +31,8 @@ namespace Joypack_Jetride
         Vector2 scale;
         Vector2 offset;
         Random random;
+        int numEnemys;
+        List<Enemy> enemys;
         Dictionary<string, Texture2D> textures;
         float speed;
         float enemySpawnTimer;
@@ -65,9 +67,12 @@ namespace Joypack_Jetride
             for (int i = 0; i < numEnemys; i++)
             {
                 float randomY = random.Next(Window.ClientBounds.Height);
+<<<<<<< HEAD
                 enemys.Add(new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(randomY), 30, Vector2.One, Color.White, 1000, 500000000 ,1));
             }
 >>>>>>> parent of b52d503... Bullet och Fiende rörelse.
+                enemys.Add(new Enemy(TextureLibrary.GetTexture("Enemy"), new Vector2(Window.ClientBounds.Width/2, randomY), 100, Vector2.One, Color.White, 1000, 5000 ,1));
+            }
             
             ground = new Ground(groundTexture, new Vector2(20, 0), new Vector2(20, 1), Color.White);
             position = new Vector2(20, 1);
@@ -92,7 +97,7 @@ namespace Joypack_Jetride
             spriteBatch = new SpriteBatch(GraphicsDevice);
             bulletTexture = Content.Load<Texture2D>("Bullet");
             playerTexture = Content.Load<Texture2D>("PlayerTexture");
-            enemyTexture = Content.Load<Texture2D>("Enemy");
+            //enemyTexture = Content.Load<Texture2D>("Enemy");
             groundTexture = Content.Load<Texture2D>("Ground");
             //enemyTexture = Content.Load<Texture2D>("Enemy");
             //textures.Add("Enemy", Content.Load<Texture2D>("Enemy"));
@@ -128,13 +133,13 @@ namespace Joypack_Jetride
             // TODO: Add your update logic here
 
             // Scroling Background
-            if (scrolling1.rectangle.X + scrolling1.rectangle.Width <= 0)
+            if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
             {
-                scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.rectangle.Width;
+                scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
             }
-            if (scrolling2.rectangle.X + scrolling2.rectangle.Width <= 0)
+            if (scrolling2.rectangle.X + scrolling2.texture.Width <= 0)
             {
-                scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling1.rectangle.Width;
+                scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling2.texture.Width;
             }
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -227,6 +232,19 @@ namespace Joypack_Jetride
             scrolling2.Draw(spriteBatch);
 
 >>>>>>> parent of b52d503... Bullet och Fiende rörelse.
+            
+            //enemy.Draw(spriteBatch);
+            //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+
+            scrolling1.Draw(spriteBatch);
+            scrolling2.Draw(spriteBatch);
+            player.Draw(spriteBatch);
+            for (int i = 0; i < enemys.Count; i++)
+            {
+                enemys[i].Draw(spriteBatch);
+            }
+            BulletManager.Draw(spriteBatch);
+            ground.Draw(spriteBatch);
             //ground.Draw(spriteBatch);
             //bullet.Draw(spriteBatch);
             //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
