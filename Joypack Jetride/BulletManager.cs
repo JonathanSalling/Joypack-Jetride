@@ -14,7 +14,7 @@ namespace Joypack_Jetride
 
         public static void AddBullet(Texture2D texture, Vector2 startPosition, Vector2 dir, float speed, Vector2 scale, Bullet.Owner owner, Color color)
         {
-            bullets.Add(new Bullet(texture, startPosition, new Vector2 (1,0), speed, scale, owner, color));
+            bullets.Add(new Bullet(texture, startPosition, dir, speed, scale, owner, color));
         }
         public static void Update(float deltaTime, Player player, List<Enemy> enemies)
         {

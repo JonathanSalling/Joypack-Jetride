@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 namespace Joypack_Jetride
 {
     class Player
@@ -40,21 +41,7 @@ namespace Joypack_Jetride
         {
             if (alive)
             {
-                if (keyboardState.IsKeyDown(Keys.W))
-                {
-                    speed = 5;
-                    moveDir.Y = -5;
-                }
-                else
-                {
-                    speed = -5;
-                }
-                if (moveDir != Vector2.Zero)
-                {
-                    moveDir.Normalize();
-                    position += (moveDir * speed);
-                    rectangle.Location = position.ToPoint();
-                }
+                //spelar rörelse
 
                 attackTimer += deltaTime;
                 if (attackTimer <= attackSpeed)
@@ -62,17 +49,26 @@ namespace Joypack_Jetride
                     attackTimer += deltaTime;
                 }
 
-                if (keyboardState.IsKeyDown(Keys.Space) == true && attackTimer >= attackSpeed)
+                if (mouseState.LeftButton == ButtonState.Pressed && attackTimer >= attackSpeed)
                 {
                     Vector2 bulletDir = mouseState.Position.ToVector2() - position;
-                    BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, bulletDir, 100, new Vector2(0.05f, 0.05f), Bullet.Owner.Player, color);
+                    BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, bulletDir, 0.1f, new Vector2(0.05f, 0.05f), Bullet.Owner.Player, color);
                     attackTimer = 0;
                 }
                 else
                 {
-                    color = Color.White;
+                    color = Color.Black;
                 }
             }
+        }
+        public void Update(GameTime gameTime, Player player)
+        {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float pixelsToMove = speed * deltaTime;
+            moveDir.Y = 1;
+            moveDir.Normalize();
+            position += moveDir * pixelsToMove;
+            rectangle.Location = (position - offset).ToPoint();
         }
         public void ChangeHealth(float healthMod)
         {
@@ -82,10 +78,10 @@ namespace Joypack_Jetride
                 alive = false;
             }
         }
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture, position, null, color, 0, Vector2.Zero, new Vector2(0.2f, 0.2f), SpriteEffects.None, 1);
-        }
+        //public void Draw(SpriteBatch spriteBatch)
+        //{
+        //    spriteBatch.Draw(texture, position, null, color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+        //}
         public Rectangle GetRectangle()
         {
             return rectangle;
