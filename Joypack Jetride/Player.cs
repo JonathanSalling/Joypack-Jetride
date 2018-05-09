@@ -40,15 +40,30 @@ namespace Joypack_Jetride
         {
             if (alive)
             {
-                moveDir.Y = -5;
+                scale = new Vector2(0.2f, 0.2f);
                 if (keyboardState.IsKeyDown(Keys.W))
                 {
                     speed = 5;
+                    moveDir.Y = -5;
                 }
                 else
                 {
-                    speed = -5;
+                    moveDir.Y = 5;
                 }
+                if (position.Y <= 0)
+                {
+                    // Tak
+                    speed = 5;
+                    moveDir.Y = 5;
+
+                }
+                else if (position.Y >= 500 - (texture.Height * scale.Y))
+                {
+                    speed = 5;
+                    moveDir.Y = -5;
+                }
+
+
                 if (moveDir != Vector2.Zero)
                 {
                     moveDir.Normalize();
@@ -64,26 +79,26 @@ namespace Joypack_Jetride
 
                 if (keyboardState.IsKeyDown(Keys.Space) == true && attackTimer >= attackSpeed)
                 {
-                    BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, new Vector2(1,0), 100, new Vector2(0.05f, 0.05f), Bullet.Owner.Player, color);
+                    BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, new Vector2(1, 0), 100, new Vector2(0.05f, 0.05f), Bullet.Owner.Player, color);
                     attackTimer = 0;
                 }
-                else
-                {
-                    color = Color.White;
-                }
+            }
+            else
+            {
+                color = Color.Black;
             }
         }
         public void ChangeHealth(float healthMod)
         {
             health += healthMod;
-            if(health <= 0)
+            if (health <= 0)
             {
                 alive = false;
             }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, color, 0, Vector2.Zero, new Vector2(0.2f, 0.2f), SpriteEffects.None, 1);
+            spriteBatch.Draw(texture, position, null, color, 0, Vector2.Zero, scale, SpriteEffects.None, 1);
         }
         public Rectangle GetRectangle()
         {

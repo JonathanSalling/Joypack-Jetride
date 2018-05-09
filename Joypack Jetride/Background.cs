@@ -21,7 +21,7 @@ namespace Joypack_Jetride
 
     class Scrolling : Background
     {
-        public Scrolling (Texture2D newTexture, Rectangle newRectangle)
+        public Scrolling(Texture2D newTexture, Rectangle newRectangle)
         {
             texture = newTexture;
             rectangle = newRectangle;
@@ -29,7 +29,7 @@ namespace Joypack_Jetride
 
         public void Update()
         {
-            rectangle.X -= 3;
+            rectangle.X -= 5;
         }
     }
 }
