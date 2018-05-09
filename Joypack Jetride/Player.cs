@@ -76,7 +76,7 @@ namespace Joypack_Jetride
         public void ChangeHealth(float healthMod)
         {
             health += healthMod;
-            if(health <= 0)
+            if (health <= 0)
             {
                 alive = false;
             }

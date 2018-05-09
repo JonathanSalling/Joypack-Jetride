@@ -11,7 +11,7 @@ namespace Joypack_Jetride
 {
     class Bullet
     {
-        public enum Owner { Player, Enemy };
+        public enum Owner { Player, Enemy};
         Owner owner;
         Texture2D texture;
         Rectangle rectangle;
@@ -70,5 +70,5 @@ namespace Joypack_Jetride
             return owner;
         }
     }
-
+    
 }
