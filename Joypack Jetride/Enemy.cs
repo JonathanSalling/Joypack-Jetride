@@ -28,47 +28,30 @@ namespace Joypack_Jetride
         public Enemy(Texture2D enemyTexture, Vector2 enemyStartPos, float enemySpeed, Vector2 enemyScale, Color enemyColor, float enemyHealth, float enemyAttackRange, float enemyAttackSpeed)
         {
             texture = enemyTexture;
-            position = enemyStartPos;
             speed = enemySpeed;
-            moveDir = new Vector2(0, 1);
+            moveDir.Y = 1;
             color = enemyColor;
             scale = new Vector2(0.2f, 0.2f);
-            enemyRectangle = new Rectangle(position.ToPoint(), (texture.Bounds.Size.ToVector2() * scale).ToPoint());
             position = new Vector2(400, 0);
+            enemyRectangle = new Rectangle(position.ToPoint(), (texture.Bounds.Size.ToVector2() * scale).ToPoint());
             health = enemyHealth;
             alive = true;
             attackRange = enemyAttackRange;
             attackSpeed = enemyAttackSpeed;
             attackTimer = 0;
         }
-        public void Update(GameTime gameTime, float deltaTime, Player player, int windowHeight)
-        //public void Update(float deltaTime, Player player, int windowHeight)
+        
+        public void Update(float deltaTime, Player player, int windowHeight)
         {
-            Console.WriteLine("hej");
             if (alive == true)
             {
-                deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                float pixelsToMove = speed * deltaTime;
-                
-                if (position.Y >= 500 - (texture.Height * scale.Y))
-                {
-                    moveDir.Y = -1;
-                }
-                else if (position.Y <= 0)
-                {
-                    moveDir.Y = 1;
-                }
-
-                moveDir.Normalize();
-                position += moveDir * pixelsToMove;
-                enemyRectangle.Location = position.ToPoint();
                 attackTimer += deltaTime;
                 if (attackTimer <= attackSpeed)
                 {
                     attackTimer += deltaTime;
                 }
 
-                if (Vector2.Distance(position, new Vector2(1, 0)/*player.GetPosition*/) <= attackRange && attackTimer >= attackSpeed)
+                if (Vector2.Distance(position, new Vector2(1, 0)) <= attackRange && attackTimer >= attackSpeed)
                 {
                     BulletManager.AddBullet(TextureLibrary.GetTexture("Bullet"), position, new Vector2(-1, 0) - position, 400, new Vector2(0.05f, 0.05f), Bullet.Owner.Enemy, color);
                     attackTimer = 0;
@@ -79,27 +62,28 @@ namespace Joypack_Jetride
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float pixelsToMove = speed * deltaTime;
-
-            if (position.Y >= 363)
-            {
-                moveDir.Y = -1;
-            }
-            else if (position.Y <= 0)
+            
+            if (position.Y <= 0)
             {
                 moveDir.Y = 1;
             }
+            else if (position.Y <= 363)
+            {
+                moveDir.Y = -1;
+            }
 
-            moveDir.Normalize();
-            position += moveDir * pixelsToMove;
-            enemyRectangle.Location = position.ToPoint();
+            if (moveDir != Vector2.Zero)
+            {
+                moveDir.Normalize();
+                position += (moveDir * speed);
+                enemyRectangle.Location = position.ToPoint();
+            }
 
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             if (alive == true)
             {
-                Console.WriteLine( texture.Height*scale);
-                //Console.WriteLine(alive);
                 spriteBatch.Draw(texture, position, null, color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             }
         }

@@ -18,7 +18,6 @@ namespace Joypack_Jetride
         Player player;
         Ground ground;
         Texture2D bulletTexture;
-        //Rectangle bulletRectangle;
         Texture2D playerTexture;
         Rectangle groundRectangle;
         Texture2D groundTexture;
@@ -63,11 +62,8 @@ namespace Joypack_Jetride
             scale = new Vector2(0.15f, 0.15f);
             offset = (playerTexture.Bounds.Size.ToVector2() / 2f) * scale;
             playerRectangle = new Rectangle((position - offset).ToPoint(), (playerTexture.Bounds.Size.ToVector2() * scale).ToPoint());
-            //enemyRectangle = new Rectangle((position - offset).ToPoint(), (enemyTexture.Bounds.Size.ToVector2() * scale).ToPoint());
-            //playerRectangle = playerTexture.Bounds;
             groundRectangle = groundTexture.Bounds;
             groundRectangle.Location = ground.AccessPosition.ToPoint();
-            //enemyRectangle.Location = ground.AccessPosition.ToPoint();
         }
 
         /// <summary>
@@ -80,11 +76,7 @@ namespace Joypack_Jetride
             spriteBatch = new SpriteBatch(GraphicsDevice);
             bulletTexture = Content.Load<Texture2D>("Bullet");
             playerTexture = Content.Load<Texture2D>("PlayerTexture");
-            //enemyTexture = Content.Load<Texture2D>("Enemy");
             groundTexture = Content.Load<Texture2D>("Ground");
-            //enemyTexture = Content.Load<Texture2D>("Enemy");
-            //textures.Add("Enemy", Content.Load<Texture2D>("Enemy"));
-
             scrolling1 = new Scrolling(Content.Load<Texture2D>("Background"), new Rectangle(0, 0, 800, 485));
             scrolling2 = new Scrolling(Content.Load<Texture2D>("Background"), new Rectangle(800, 0, 800, 485));
 
@@ -114,7 +106,6 @@ namespace Joypack_Jetride
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            // Scroling Background
             if (scrolling1.rectangle.X + scrolling1.rectangle.Width <= 0)
             {
                 scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.rectangle.Width;
@@ -126,40 +117,12 @@ namespace Joypack_Jetride
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             player.Update(deltaTime, Keyboard.GetState(), Mouse.GetState(), Window.ClientBounds.Size);
-            //float pixelsToMove = speed * deltaTime;
-
-            //BulletManager.Update(deltaTime, player, enemies);
-            //enemy.Update(gameTime, player);
+            
             KeyboardState keyboardState = Keyboard.GetState();
-
-            //if (keyboardState.IsKeyDown(Keys.W))
-            //{
-            //    speed = 5;
-            //    moveDir.Y = -5;
-            //}
-            //else
-            //{
-            //    speed = -5;
-            //}
-            //if (playerRectangle.Intersects(groundRectangle))
-            //{
-            //    moveDir.Y = 0;
-            //}
-            //else
-            //{
-            //    moveDir.Y = -5;
-            //}
-            //if (enemyRectangle.Intersects(groundRectangle))
-            //{
-            //    moveDir.Y = 0;
-            //}
+            
             BulletManager.Update(deltaTime, player, enemys);
 
-            //for (int i = 0; i < enemys.Count; i++)
-            //{
-            //    enemys[i].Update(gameTime, player);
-            //}
-
+            
             scrolling1.Update();
             scrolling2.Update();
             base.Update(gameTime);
@@ -176,9 +139,6 @@ namespace Joypack_Jetride
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            //enemy.Draw(spriteBatch);
-            //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-
             scrolling1.Draw(spriteBatch);
             scrolling2.Draw(spriteBatch);
             player.Draw(spriteBatch);
@@ -188,11 +148,6 @@ namespace Joypack_Jetride
             }
             BulletManager.Draw(spriteBatch);
             ground.Draw(spriteBatch);
-            //ground.Draw(spriteBatch);
-            //bullet.Draw(spriteBatch);
-            //spriteBatch.Draw(groundTexture, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            //enemy.Draw(spriteBatch);
-            //spriteBatch.Draw(playerTexture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
 
             base.Draw(gameTime);

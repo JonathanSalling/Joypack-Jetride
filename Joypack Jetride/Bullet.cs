@@ -44,7 +44,7 @@ namespace Joypack_Jetride
         public void Update(float deltaTime)
         {
             position += moveDir * speed * deltaTime;
-            rectangle.Location = position.ToPoint();//((position - offset) * scale).ToPoint();
+            rectangle.Location = position.ToPoint();
             rectangle.Offset(-(offset * scale));
         }
         public void Draw(SpriteBatch spriteBatch)

@@ -52,7 +52,6 @@ namespace Joypack_Jetride
                 }
                 if (position.Y <= 0)
                 {
-                    // Tak
                     speed = 5;
                     moveDir.Y = 5;
 
